@@ -24,9 +24,9 @@ package body System_Random is
         BCryptGenRandom
           (System.Null_Address, Output (Output'First)'Access,
            Unsigned_32 (Output'Length), BCRYPT_USE_SYSTEM_PREFERRED_RNG);
-      if Ret /= 0 then
-         --  Not correct, fix this
-         raise System_Random_Error;
+      if Ret >= 16#8000_0000# then --  Is not success nor informational
+         raise System_Random_Error
+           with "BCryptGenRandom failed with status code " & Ret'Image;
       end if;
    end Random;
 end System_Random;
