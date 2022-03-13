@@ -20,10 +20,6 @@ package body System_Random is
    procedure Random (Output : aliased out Element_Array) is
       Return_Code : Unsigned_32 := 0;
    begin
-      if Output'Length = 0 then
-         return;
-      end if;
-
       Return_Code :=
         BCryptGenRandom
           (System.Null_Address,

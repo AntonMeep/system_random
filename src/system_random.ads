@@ -1,4 +1,5 @@
-with Interfaces; use Interfaces;
+with Interfaces;   use Interfaces;
+with Interfaces.C; use Interfaces.C;
 
 generic
    type Element is mod <>;
@@ -22,6 +23,7 @@ is
    System_Random_Error : exception;
 
    procedure Random (Output : aliased out Element_Array) with
-      Pre => Output'Length <= Unsigned_32'Last;
+      Pre => Output'Length <= Interfaces.Unsigned_32'Last and
+      Output'Length <= Interfaces.C.size_t'Last;
       --  Fill Output with random data
 end System_Random;
