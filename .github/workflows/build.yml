@@ -24,7 +24,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Install toolchain
-      uses: ada-actions/toolchain
+      uses: ada-actions/toolchain@ce2020
       with:
         distrib: ${{matrix.compiler}}
         target: native
