@@ -24,7 +24,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Install toolchain
-      uses: ada-actions/toolchain@ce2021
+      uses: ada-actions/toolchain
       with:
         distrib: ${{matrix.compiler}}
         target: native
@@ -34,12 +34,51 @@ jobs:
       with:
         toolchain: "gnat_external"
 
-    - name: Build debug, static
-      run: |
+    - name: Build debug, static-pic
+      run: >
         alr build
-        -XSYSTEM_RANDOM_LIBRARY_TYPE=static
+        -XSYSTEM_RANDOM_LIBRARY_TYPE=static-pic
         -XSYSTEM_RANDOM_COMPILE_CHECKS=enabled
         -XSYSTEM_RANDOM_RUNTIME_CHECKS=enabled
         -XSYSTEM_RANDOM_STYLE_CHECKS=enabled
         -XSYSTEM_RANDOM_CONTRACTS=enabled
         -XSYSTEM_RANDOM_BUILD_MODE=debug
+
+    - name: Build debug, relocatable
+      run: >
+        alr build
+        -XSYSTEM_RANDOM_LIBRARY_TYPE=relocatable
+        -XSYSTEM_RANDOM_COMPILE_CHECKS=enabled
+        -XSYSTEM_RANDOM_RUNTIME_CHECKS=enabled
+        -XSYSTEM_RANDOM_STYLE_CHECKS=enabled
+        -XSYSTEM_RANDOM_CONTRACTS=enabled
+        -XSYSTEM_RANDOM_BUILD_MODE=debug
+
+    - name: Try building and running the example program
+      run: |
+        cd example && alr run && cd ..
+
+    - name: Clean-up before building release
+      run: |
+        alr clean
+    
+    - name: Build release, static-pic
+      run: >
+        alr build
+        -XSYSTEM_RANDOM_LIBRARY_TYPE=static-pic
+        -XSYSTEM_RANDOM_BUILD_MODE=optimize
+
+    - name: Build release, relocatable
+      run: >
+        alr build
+        -XSYSTEM_RANDOM_LIBRARY_TYPE=relocatable
+        -XSYSTEM_RANDOM_BUILD_MODE=optimize
+
+    - name: Upload binaries
+      uses: actions/upload-artifact@v2
+      with:
+        name: libsystem_random-bin-${{matrix.os}}-${{matrix.compiler}}.zip
+        path: |
+          lib/libsystem_random.*
+          README.md
+          LICENSE.txt
