@@ -1,3 +1,5 @@
+with Interfaces; use Interfaces;
+
 generic
    type Element is mod <>;
    --  ELement type, must be mod 2**8, i.e. represent a byte
@@ -19,6 +21,7 @@ is
 
    System_Random_Error : exception;
 
-   procedure Random (Output : out Element_Array);
-   --  Fill Output with random data
+   procedure Random (Output : aliased out Element_Array) with
+      Pre => Output'Length <= Unsigned_32'Last;
+      --  Fill Output with random data
 end System_Random;

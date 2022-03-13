@@ -15,7 +15,7 @@ procedure System_Random_Example is
 
    use Streams_Random;
 
-   Random_Values : Stream_Element_Array (1 .. 4) := (others => 0);
+   Random_Values : aliased Stream_Element_Array := (0 .. 3 => 0);
 begin
    Random (Random_Values); --  Fill with random data
    Put_Line ("Random integer: " & Convert (Random_Values)'Image);
