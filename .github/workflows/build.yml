@@ -11,9 +11,10 @@ jobs:
     name: Building on ${{matrix.os}} using ${{matrix.compiler}}
     runs-on: ${{matrix.os}}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        compiler: [fsf, community]
+        compiler: [community] # TODO: Add FSF on ubuntu
         exclude:
           - os: windows-latest
             compiler: fsf
