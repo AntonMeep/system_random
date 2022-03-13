@@ -10,7 +10,12 @@ project System_Random is
    type OS_Kind is ("Windows_NT", "UNIX");
    OS : OS_Kind := external("SYSTEM_RANDOM_OS", external ("OS", "UNIX"));
 
-   for Source_Dirs use ("src", "src/" & OS);
+   case OS is
+      when "Windows_NT" =>
+         for Source_Dirs use ("src", "src/windows");
+      when "UNIX" =>
+         for Source_Dirs use ("src", "src/unix");
+   end case;
 
    type Library_Type_Type is ("relocatable", "static", "static-pic");
    Library_Type : Library_Type_Type :=
