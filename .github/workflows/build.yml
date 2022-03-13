@@ -61,24 +61,3 @@ jobs:
     - name: Clean-up before building release
       run: |
         alr clean
-    
-    - name: Build release, static-pic
-      run: >
-        alr build
-        -XSYSTEM_RANDOM_LIBRARY_TYPE=static-pic
-        -XSYSTEM_RANDOM_BUILD_MODE=optimize
-
-    - name: Build release, relocatable
-      run: >
-        alr build
-        -XSYSTEM_RANDOM_LIBRARY_TYPE=relocatable
-        -XSYSTEM_RANDOM_BUILD_MODE=optimize
-
-    - name: Upload binaries
-      uses: actions/upload-artifact@v2
-      with:
-        name: libsystem_random-bin-${{matrix.os}}-${{matrix.compiler}}.zip
-        path: |
-          lib/libsystem_random.*
-          README.md
-          LICENSE.txt
